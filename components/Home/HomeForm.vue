@@ -96,7 +96,7 @@
                   type="password"
                   placeholder="Please fill password"
                   :class="
-                    errPassword || matchPass == true
+                    errPassword || matchPass == false
                       ? 'w-full hover:border-white  border-2 border-red-600 text-lg px-2 h-10 mt-4 rounded-lg'
                       : 'w-full text-lg px-2 rounded-lg h-10 mt-4'
                   "
@@ -104,7 +104,7 @@
                 <label class="pl-2 text-red-500" v-if="errPassword == true"
                   >Please fill Out this field</label
                 >
-                <div class="pl-2 text-red-500" v-if="matchPass == true">
+                <div class="pl-2 text-red-500" v-if="matchPass == false">
                   Passwords do not match
                 </div>
               </div>
@@ -121,8 +121,7 @@
                   v-model="VPassword"
                   type="password"
                   :class="
-                    errVPassword ||
-                    (VPassword != Password && errVPassword == true)
+                    errVPassword || matchPass == false
                       ? 'w-full hover:border-white text-lg px-2 h-10 mt-4 rounded-lg border-2 border-red-600'
                       : 'w-full text-lg px-2 h-10 mt-4 rounded-lg'
                   "
@@ -131,7 +130,7 @@
                 <label class="pl-2 text-red-500" v-if="errVPassword == true"
                   >Please fill Out this field</label
                 >
-                <div class="pl-2 text-red-500" v-if="matchPass == true">
+                <div class="pl-2 text-red-500" v-if="matchPass == false">
                   Passwords do not match
                 </div>
               </div>
@@ -172,10 +171,7 @@
             บันทึก
           </button>
         </div>
-        <div
-          class="text-gray-900 text-xl px-20 pb-20"
-          v-if="result && mail == false && platL && platF && matchPass"
-        >
+        <div class="text-gray-900 text-xl px-20 pb-20" v-if="result">
           result
           <div class="text-lg text-gray-700">
             <div>First name : {{ firstName }}</div>
@@ -201,7 +197,7 @@ export default {
       errVPassword: false,
       errgenDer: false,
       platF: false,
-      matchPass: false,
+      matchPass: true,
       platL: false,
       mail: true,
       firstName: '',
@@ -250,7 +246,12 @@ export default {
       if (this.Email) {
         this.mail = this.ValidateEmail(this.Email)
       }
-      this.matchPass = this.VPassword == this.Password ? false : true
+      this.matchPass =
+        this.VPassword != '' &&
+        this.Password != '' &&
+        this.VPassword == this.Password
+          ? true
+          : false
       this.errEmail = this.Email != '' ? false : true
       this.errfirstName = this.firstName ? false : true
       this.errlastName = this.lastName != '' ? false : true
@@ -258,22 +259,29 @@ export default {
       this.errVPassword = this.VPassword != '' ? false : true
       this.errgenDer = this.genDer != '' ? false : true
 
-      // console.log(this.errEmail)
-      // console.log(this.errfirstName)
-      // console.log(this.errlastName)
-      // console.log(this.errPassword)
-      // console.log(this.errVPassword)
-      // console.log(this.errgenDer)
-
       this.result =
         this.errEmail == false &&
         this.errfirstName == false &&
         this.errlastName == false &&
         this.errPassword == false &&
         this.errVPassword == false &&
-        this.errgenDer == false
-          ? true
-          : false
+        this.errgenDer == false &&
+        this.mail == true &&
+        this.platF == false &&
+        this.platL == false
+      this.matchPass == true ? true : false
+
+      // console.log(this.errEmail)
+      // console.log(this.errfirstName)
+      // console.log(this.errlastName)
+      // console.log(this.errPassword)
+      // console.log(this.errVPassword)
+      // console.log(this.errgenDer)
+      // console.log(this.mail)
+      // console.log(this.platF)
+      // console.log(this.platL)
+      // console.log(this.matchPass)
+      console.log(this.result)
     },
   },
 }
