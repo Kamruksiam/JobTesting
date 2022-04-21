@@ -8,10 +8,10 @@
           class="col-span-12 px-4"
         >
           <div class="grid grid-cols-12">
-            <div class="col-span-9 text-md font-bold">
+            <div class="col-span-9 text-lg font-bold">
               name : {{ item.name }}
             </div>
-            <div class="col-span-3 text-right text-md font-bold">
+            <div class="col-span-3 text-right text-lg font-bold">
               Total weight : {{ item.totalSubProductWeight }}
             </div>
           </div>
