@@ -172,7 +172,10 @@
             บันทึก
           </button>
         </div>
-        <div class="text-gray-900 text-xl px-20 pb-20" v-if="result">
+        <div
+          class="text-gray-900 text-xl px-20 pb-20"
+          v-if="result && mail == false && platL && platF && matchPass"
+        >
           result
           <div class="text-lg text-gray-700">
             <div>First name : {{ firstName }}</div>
