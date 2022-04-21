@@ -18,7 +18,7 @@
                   v-model="firstName"
                   type="text"
                   :class="
-                    errfirstName
+                    errfirstName || platF == true
                       ? 'w-full hover:border-white border-2 border-red-600 text-lg px-2 h-10 mt-4 rounded-lg'
                       : 'w-full text-lg px-2 h-10 mt-4 rounded-lg'
                   "
@@ -27,6 +27,12 @@
                 <label class="pl-2 text-red-500" v-if="errfirstName == true"
                   >Please fill Out this field</label
                 >
+                <div
+                  class="pl-2 text-red-500"
+                  v-if="platF == true && firstName"
+                >
+                  First Name pattern was wrong
+                </div>
               </div>
             </div>
 
@@ -42,7 +48,7 @@
                   type="text"
                   placeholder="Please fill last name"
                   :class="
-                    errlastName
+                    errlastName || platL == true
                       ? 'w-full hover:border-white border-2 border-red-600 text-lg px-2 h-10 mt-4 rounded-lg'
                       : 'w-full text-lg px-2 rounded-lg h-10 mt-4'
                   "
@@ -50,6 +56,9 @@
                 <label class="pl-2 text-red-500" v-if="errlastName == true"
                   >Please fill Out this field</label
                 >
+                <div class="pl-2 text-red-500" v-if="platL == true && lastName">
+                  Last Name pattern was wrong
+                </div>
               </div>
             </div>
 
@@ -87,8 +96,7 @@
                   type="password"
                   placeholder="Please fill password"
                   :class="
-                    errPassword ||
-                    (VPassword != Password && errPassword == true)
+                    errPassword || matchPass == true
                       ? 'w-full hover:border-white  border-2 border-red-600 text-lg px-2 h-10 mt-4 rounded-lg'
                       : 'w-full text-lg px-2 rounded-lg h-10 mt-4'
                   "
@@ -96,10 +104,7 @@
                 <label class="pl-2 text-red-500" v-if="errPassword == true"
                   >Please fill Out this field</label
                 >
-                <div
-                  class="pl-2 text-red-500"
-                  v-if="VPassword != Password && errVPassword == true"
-                >
+                <div class="pl-2 text-red-500" v-if="matchPass == true">
                   Passwords do not match
                 </div>
               </div>
@@ -126,10 +131,7 @@
                 <label class="pl-2 text-red-500" v-if="errVPassword == true"
                   >Please fill Out this field</label
                 >
-                <div
-                  class="pl-2 text-red-500"
-                  v-if="VPassword != Password && errVPassword == true"
-                >
+                <div class="pl-2 text-red-500" v-if="matchPass == true">
                   Passwords do not match
                 </div>
               </div>
@@ -195,6 +197,9 @@ export default {
       errPassword: false,
       errVPassword: false,
       errgenDer: false,
+      platF: false,
+      matchPass: false,
+      platL: false,
 
       firstName: '',
       lastName: '',
@@ -216,9 +221,9 @@ export default {
       var text =
         /^[กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรฤลฦวศษสหฬอฮฯะัาำิีึืฺุูเแโใไๅๆ็่้๊๋์+a-zA-z]+$/
       if (inputtxt.match(text)) {
-        return true
-      } else {
         return false
+      } else {
+        return true
       }
     },
     ValidateEmail(input) {
@@ -235,14 +240,13 @@ export default {
     save() {
       let mail = this.ValidateEmail(this.Email)
 
-      let checkFname = this.NamePlat(this.firstName)
-      let checkLname = this.NamePlat(this.lastName)
-      console.log(checkLname)
+      this.platF = this.NamePlat(this.firstName)
+      this.platL = this.NamePlat(this.lastName)
 
+      this.matchPass = this.VPassword == this.Password ? false : true
       this.errEmail = this.Email != '' && mail == true ? false : true
-      this.errfirstName = this.firstName && checkFname == true ? false : true
-      this.errlastName =
-        this.lastName != '' && checkLname == true ? false : true
+      this.errfirstName = this.firstName ? false : true
+      this.errlastName = this.lastName != '' ? false : true
       this.errPassword = this.Password != '' ? false : true
       this.errVPassword = this.VPassword != '' ? false : true
       this.errgenDer = this.genDer != '' ? false : true
