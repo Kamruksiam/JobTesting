@@ -27,10 +27,7 @@
                 <label class="pl-2 text-red-500" v-if="errfirstName == true"
                   >Please fill Out this field</label
                 >
-                <div
-                  class="pl-2 text-red-500"
-                  v-if="platF == true && firstName"
-                >
+                <div class="pl-2 text-red-500" v-if="platF == true">
                   First Name pattern was wrong
                 </div>
               </div>
@@ -56,7 +53,7 @@
                 <label class="pl-2 text-red-500" v-if="errlastName == true"
                   >Please fill Out this field</label
                 >
-                <div class="pl-2 text-red-500" v-if="platL == true && lastName">
+                <div class="pl-2 text-red-500" v-if="platL == true">
                   Last Name pattern was wrong
                 </div>
               </div>
@@ -73,7 +70,7 @@
                   v-model="Email"
                   type="text"
                   :class="
-                    errEmail
+                    errEmail || mail == false
                       ? 'w-full hover:border-white border-2 border-red-600 text-lg px-2 h-10 mt-4 rounded-lg'
                       : 'w-full text-lg px-2 h-10 mt-4 rounded-lg'
                   "
@@ -82,6 +79,9 @@
                 <label class="pl-2 text-red-500" v-if="errEmail == true"
                   >Please fill Out this field</label
                 >
+                <div class="pl-2 text-red-500" v-if="mail == false">
+                  Email pattern was wrong
+                </div>
               </div>
             </div>
             <div class="inline-flex w-full">
@@ -200,7 +200,7 @@ export default {
       platF: false,
       matchPass: false,
       platL: false,
-
+      mail: true,
       firstName: '',
       lastName: '',
       Email: '',
@@ -238,13 +238,17 @@ export default {
     },
 
     save() {
-      let mail = this.ValidateEmail(this.Email)
-
-      this.platF = this.NamePlat(this.firstName)
-      this.platL = this.NamePlat(this.lastName)
-
+      if (this.firstName) {
+        this.platF = this.NamePlat(this.firstName)
+      }
+      if (this.lastName) {
+        this.platL = this.NamePlat(this.lastName)
+      }
+      if (this.Email) {
+        this.mail = this.ValidateEmail(this.Email)
+      }
       this.matchPass = this.VPassword == this.Password ? false : true
-      this.errEmail = this.Email != '' && mail == true ? false : true
+      this.errEmail = this.Email != '' ? false : true
       this.errfirstName = this.firstName ? false : true
       this.errlastName = this.lastName != '' ? false : true
       this.errPassword = this.Password != '' ? false : true
