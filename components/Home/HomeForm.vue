@@ -246,12 +246,10 @@ export default {
       if (this.Email) {
         this.mail = this.ValidateEmail(this.Email)
       }
-      this.matchPass =
-        this.VPassword != '' &&
-        this.Password != '' &&
-        this.VPassword == this.Password
-          ? true
-          : false
+      if (this.VPassword != '' && this.Password != '') {
+        this.matchPass = this.VPassword == this.Password ? true : false
+      }
+
       this.errEmail = this.Email != '' ? false : true
       this.errfirstName = this.firstName ? false : true
       this.errlastName = this.lastName != '' ? false : true
