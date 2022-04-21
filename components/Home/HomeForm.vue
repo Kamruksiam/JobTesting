@@ -158,7 +158,7 @@
                   <option value="Other">Other</option>
                 </select>
                 <label class="pl-2 text-red-500" v-if="errgenDer == true"
-                  >Please fill Out this field</label
+                  >Please fill select gender</label
                 >
               </div>
             </div>
