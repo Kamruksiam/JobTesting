@@ -84,10 +84,11 @@
               <div class="w-full">
                 <input
                   v-model="Password"
-                  type="text"
+                  type="password"
                   placeholder="Please fill password"
                   :class="
-                    errPassword
+                    errPassword ||
+                    (VPassword != Password && errPassword == true)
                       ? 'w-full hover:border-white  border-2 border-red-600 text-lg px-2 h-10 mt-4 rounded-lg'
                       : 'w-full text-lg px-2 rounded-lg h-10 mt-4'
                   "
@@ -95,6 +96,12 @@
                 <label class="pl-2 text-red-500" v-if="errPassword == true"
                   >Please fill Out this field</label
                 >
+                <div
+                  class="pl-2 text-red-500"
+                  v-if="VPassword != Password && errVPassword == true"
+                >
+                  Passwords do not match
+                </div>
               </div>
             </div>
 
@@ -107,9 +114,10 @@
               <div class="w-full">
                 <input
                   v-model="VPassword"
-                  type="text"
+                  type="password"
                   :class="
-                    errVPassword
+                    errVPassword ||
+                    (VPassword != Password && errVPassword == true)
                       ? 'w-full hover:border-white text-lg px-2 h-10 mt-4 rounded-lg border-2 border-red-600'
                       : 'w-full text-lg px-2 h-10 mt-4 rounded-lg'
                   "
@@ -118,6 +126,12 @@
                 <label class="pl-2 text-red-500" v-if="errVPassword == true"
                   >Please fill Out this field</label
                 >
+                <div
+                  class="pl-2 text-red-500"
+                  v-if="VPassword != Password && errVPassword == true"
+                >
+                  Passwords do not match
+                </div>
               </div>
             </div>
             <div class="inline-flex w-full">
@@ -198,6 +212,15 @@ export default {
       var option = select.options[select.selectedIndex]
       this.genDer = option.value
     },
+    NamePlat(inputtxt) {
+      var text =
+        /^[กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรฤลฦวศษสหฬอฮฯะัาำิีึืฺุูเแโใไๅๆ็่้๊๋์+a-zA-z]+$/
+      if (inputtxt.match(text)) {
+        return true
+      } else {
+        return false
+      }
+    },
     ValidateEmail(input) {
       var validRegex =
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -208,27 +231,28 @@ export default {
         return false
       }
     },
+
     save() {
       let mail = this.ValidateEmail(this.Email)
-      console.log(this.genDer.length)
+
+      let checkFname = this.NamePlat(this.firstName)
+      let checkLname = this.NamePlat(this.lastName)
+      console.log(checkLname)
 
       this.errEmail = this.Email != '' && mail == true ? false : true
-      this.errfirstName =
-        this.firstName && isNaN(this.firstName) == true ? false : true
+      this.errfirstName = this.firstName && checkFname == true ? false : true
       this.errlastName =
-        this.lastName != '' && isNaN(this.lastName) == true ? false : true
-      this.errPassword =
-        this.Password != '' && this.Password == this.VPassword ? false : true
-      this.errVPassword =
-        this.VPassword != '' && this.Password == this.VPassword ? false : true
+        this.lastName != '' && checkLname == true ? false : true
+      this.errPassword = this.Password != '' ? false : true
+      this.errVPassword = this.VPassword != '' ? false : true
       this.errgenDer = this.genDer != '' ? false : true
 
-      console.log(this.errEmail)
-      console.log(this.errfirstName)
-      console.log(this.errlastName)
-      console.log(this.errPassword)
-      console.log(this.errVPassword)
-      console.log(this.errgenDer)
+      // console.log(this.errEmail)
+      // console.log(this.errfirstName)
+      // console.log(this.errlastName)
+      // console.log(this.errPassword)
+      // console.log(this.errVPassword)
+      // console.log(this.errgenDer)
 
       this.result =
         this.errEmail == false &&
